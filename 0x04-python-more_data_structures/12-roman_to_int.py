@@ -1,40 +1,42 @@
-#!/usr/bin/python3
-"""function that converts a roman numeral to an interger"""
+def roman_to_int(roman_number):
+  """Converts a Roman numeral to an integer.
+
+  Args:
+    roman_number: A string representing a Roman numeral.
+
+  Returns:
+    The integer value of the Roman numeral.
+  """
+  roman_numeral_dict = {
+      "I": 1,
+      "V": 5,
+      "X": 10,
+      "L": 50,
+      "C": 100,
+      "D": 500,
+      "M": 1000,
+      "IV": 4,
+      "IX": 9,
+      "XL": 40,
+      "XC": 90,
+      "CD": 400,
+      "CM": 900,
+  }
+
+  total = 0
+  i = 0
+  while i < len(roman_number):
+    current_value = roman_numeral_dict[roman_number[i]]
+    next_value = None
+    if i + 1 < len(roman_number):
+      next_value = roman_numeral_dict[roman_number[i + 1]]
+
+    if next_value and current_value < next_value:
+      total -= current_value
+    else:
+      total += current_value
+    i += 1
+
+  return total
 
 
-def to_subtract(list_number):
-    to_sub = 0
-    max_list = max(list_number)
-
-    for x in list_number:
-        if max_list > x:
-            to_sub += x
-        return (max_list - to_sub)
-
-
-def roman_to_int(roman_string):
-    if not roman_string:
-        return 0
-    if not isinstance(roman_string, str):
-        return 0
-
-    roman_num = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
-    list_keys = list(roman_num.keys())
-
-    number = 0
-    last_roman = 0
-    list_number = [0]
-
-    for ch in roman_string:
-        for r_number in list_keys:
-            if r_number == ch:
-                if roman_num.get(ch) <= last_roman:
-                    number += to_subtract(list_number)
-                    list_number = [roman_num.get(ch)]
-                else:
-                    list_number.append(roman_num.get(ch))
-                last_roman = roman_num.get(ch)
-
-        number += to_subtract(list_number)
-
-        return (number)
